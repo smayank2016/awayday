@@ -14,16 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
-from AwayDayApp.views import add, view, delete, users, login, home
+
+from AwayDayApp.main import login, home, index,logout
+from AwayDayApp.accommodation import add, view, delete, users
 
 urlpatterns = [
+    url(r'^logout/', logout),
     url(r'^login/', login),
-    url(r'^admin/', admin.site.urls),
+    url(r'^oauth2callback/', home),
+    url(r'^$', index),   
     url(r'AwayDayApp/add$', add),
     url(r'AwayDayApp/view$', view),
     url(r'AwayDayApp/delete$', delete),
     url(r'AwayDayApp/api/users$', users),
-    url(r'^oauth2callback/', home)
-    
 ]

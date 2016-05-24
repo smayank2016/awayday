@@ -1,26 +1,8 @@
 # Create your views here.
 from AwayDayApp.models import *  
-from django.shortcuts import render, HttpResponse, redirect
-from django.http import JsonResponse
-from django.core import serializers
-from django.forms.models import model_to_dict
+from django.shortcuts import render, HttpResponse
 import json
-from AwayDay.settings import flow
-from apiclient.discovery import build
 import httplib2
-import os
-
-def login(request,):  
-    auth_uri = flow.step1_get_authorize_url();
-    return redirect(auth_uri);
-
-def home(request,):  
-    params = request.GET;
-    code = params.get("code");
-    credentials = flow.step2_exchange(code);
-    
-    request.session['credentials'] = credentials;
-    return redirect("/AwayDayApp/view");
     
 def add(request,):
 
@@ -37,12 +19,6 @@ def add(request,):
     
 def view(request,):
     credentials = request.session['credentials'];
-    http_auth = credentials.authorize(httplib2.Http());
-    # print credentials;
-    user_info_service = build(
-      serviceName='oauth2', version='v2',
-      http=http_auth);
-    user_info = user_info_service.userinfo().get().execute();
     # print user_info;
     return render(request, "home.html", {"users":User.objects.all()})
 
