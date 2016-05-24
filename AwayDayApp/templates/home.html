@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Users</h1>
+{% for user in users %}
+{{ user.first_name }} <a href="/AwayDayApp/delete?name={{user.first_name}}">Delete</a> <br />
+{% endfor %} 
+
+{{ message }}
+
+<h1>Add User</h1>
+<form name="addForm" action="/AwayDayApp/add" method="POST">
+	Name: <input name="name" type="text" /> <br />
+	Email Id: <input name="emailid" type="text" /> <br />
+	{% csrf_token %}
+	<input type="submit" name="submit" value="Add" />
+</form>
+
+{% endblock %}
