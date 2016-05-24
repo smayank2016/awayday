@@ -25,7 +25,7 @@ def home(request,):
 def add(request,):
 
     params = request.POST;
-    print params;
+    # print params;
     name = params.get("name");
     email = params.get("emailid");
     
@@ -38,12 +38,12 @@ def add(request,):
 def view(request,):
     credentials = request.session['credentials'];
     http_auth = credentials.authorize(httplib2.Http());
-    print credentials;
+    # print credentials;
     user_info_service = build(
       serviceName='oauth2', version='v2',
       http=http_auth);
     user_info = user_info_service.userinfo().get().execute();
-    print user_info;
+    # print user_info;
     return render(request, "home.html", {"users":User.objects.all()})
 
 def delete(request,):
