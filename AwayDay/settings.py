@@ -18,8 +18,11 @@ from oauth2client import GOOGLE_REVOKE_URI
 from oauth2client import GOOGLE_TOKEN_URI
 from oauth2client import GOOGLE_TOKEN_INFO_URI
 from mongoengine import connect
+from django.apps import apps
+from AwayDay.settings_local import localSettings
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+confobj = localSettings()
 
 
 # Quick-start development settings - unsuitable for production
@@ -44,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'AwayDayApp',
-    'django_extensions'
+    'django_extensions',
+    
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -124,17 +128,24 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-
 connect(
-    host=os.environ["MONGO_CONNECTION_STRING"]
+   # host=os.environ["MONGO_CONNECTION_STRING"]
+    host = confobj.MONGO_CONNECTION_STRING
 )
 
 
-flow = client.OAuth2WebServerFlow(os.environ["GOOGLE_CLIENT_ID"], os.environ["GOOGLE_CLIENT_SECRET"], "https://www.googleapis.com/auth/userinfo.email",
-                               redirect_uri=os.environ["GOOGLE_REDIRECT_URI"],
+# flow = client.OAuth2WebServerFlow(os.environ["GOOGLE_CLIENT_ID"], os.environ["GOOGLE_CLIENT_SECRET"], "https://www.googleapis.com/auth/userinfo.email",
+#                                redirect_uri=os.environ["GOOGLE_REDIRECT_URI"],
+#                                user_agent=None,token_uri=GOOGLE_TOKEN_URI,
+#                               auth_uri=GOOGLE_AUTH_URI,
+#                               revoke_uri=GOOGLE_REVOKE_URI,
+#                               device_uri=GOOGLE_DEVICE_URI,
+#                               token_info_uri=GOOGLE_TOKEN_INFO_URI)
+
+flow = client.OAuth2WebServerFlow(confobj.GOOGLE_CLIENT_ID, confobj.GOOGLE_CLIENT_SECRET, "https://www.googleapis.com/auth/userinfo.email",
+                               redirect_uri=confobj.GOOGLE_REDIRECT_URI,
                                user_agent=None,token_uri=GOOGLE_TOKEN_URI,
                               auth_uri=GOOGLE_AUTH_URI,
                               revoke_uri=GOOGLE_REVOKE_URI,
                               device_uri=GOOGLE_DEVICE_URI,
                               token_info_uri=GOOGLE_TOKEN_INFO_URI)
-
